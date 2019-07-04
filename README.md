@@ -17,9 +17,5 @@ and the ICT will respond with "Success: CPU Set to 6502", or "Error: <error mess
   
 For maximum compatiblity and the fact you can use an Serial communication software such as the Arduino Serial Monitor, everything is sent via ASCII.  
 
-Installation Instructions
-... To be added
-
-Windows Softare Download
-... To be added
+See the Wiki for more information https://github.com/BrienKing/Arduino-2560-In-Circuit-Tester-USB-Interface/wiki
 
