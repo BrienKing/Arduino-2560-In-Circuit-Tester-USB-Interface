@@ -36,6 +36,8 @@
 #include <6502PinDescription.h>
 #include <C6502ClockMasterCpu.h>
 #include <C6502Cpu.h>
+#include <CZ80Cpu.h>
+#include <C6809ECpu.h>
 
 enum ResultCodes
 {
@@ -44,7 +46,7 @@ enum ResultCodes
   Error = 2
 };
 
-String const VERSION = "1.0 B1";
+String const VERSION = "1.0 B2";
 String const COMMAND_SEPARATOR = ":";
 String const TERMINATOR_CHAR = "~";
 String const LCD_BLANK_LINE = "                ";
@@ -439,7 +441,7 @@ void HandleCommand(String p_command, String p_parameters)
 void SetCpu(String p_parameters)
 {
   PERROR cpuResult;
-
+  
   if (m_currentCpu != nullptr)
   {
     delete m_currentCpu;
@@ -489,13 +491,44 @@ void SetCpu(String p_parameters)
   }
   else if (p_parameters.equalsIgnoreCase("z80"))
   {
-    //TODO: Create the Z80 Class
+    m_currentCpu = new CZ80Cpu(true);
+    if (m_currentCpu == nullptr)
+    {
+      DisplayStatusInfo("Error! Z80 CPU Mode");
+      SendResponse(Error, "Could not create the Z80 CPU object.");
+      return;
+    }
+
+    cpuResult = m_currentCpu->idle();
+    if (cpuResult->code != ERROR_SUCCESS)
+    {
+      DisplayCommandDetails("Error! " + cpuResult->description);
+      SendResponse(Error, cpuResult->description);
+      return;
+    }
+    
     DisplayStatusInfo("Z80 CPU Mode");
     SendResponse(Success, "CPU Set to Z80");
   }
   else if (p_parameters == "6809")
   {
-    //TODO: Create the 6809 Class
+
+    m_currentCpu = new C6809ECpu();
+    if (m_currentCpu == nullptr)
+    {
+      DisplayStatusInfo("Error! 6809 CPU Mode");
+      SendResponse(Error, "Could not create the 6809 CPU object.");
+      return;
+    }
+
+    cpuResult = m_currentCpu->idle();
+    if (cpuResult->code != ERROR_SUCCESS)
+    {
+      DisplayCommandDetails("Error! " + cpuResult->description);
+      SendResponse(Error, cpuResult->description);
+      return;
+    }
+    
     DisplayStatusInfo("6809 CPU Mode");
     SendResponse(Success, "CPU Set to 6809");
   }
