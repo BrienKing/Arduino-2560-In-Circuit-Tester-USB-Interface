@@ -11,7 +11,7 @@ For example:
 
 You would send the command:
 
-setCpu:6502
+cpu:6502
 
 and the ICT will respond with "Success: CPU Set to 6502", or "Error: <error message>" if there is a problem setting up the CPU.
   
@@ -19,3 +19,6 @@ For maximum compatiblity and the fact you can use an Serial communication softwa
 
 See the Wiki for more information https://github.com/BrienKing/Arduino-2560-In-Circuit-Tester-USB-Interface/wiki
 
+Video on Compiling the code
+
+https://www.youtube.com/watch?v=0vYs_Ps9toM
