@@ -38,6 +38,7 @@
 #include <C6502Cpu.h>
 #include <CZ80Cpu.h>
 #include <C6809ECpu.h>
+#include <C8085Cpu.h>
 
 enum ResultCodes
 {
@@ -531,6 +532,27 @@ void SetCpu(String p_parameters)
     
     DisplayStatusInfo("6809 CPU Mode");
     SendResponse(Success, "CPU Set to 6809");
+  }
+  else if (p_parameters == "8085")
+  {
+	m_currentCpu = new C8085Cpu();
+	if (m_currentCpu == nullptr)
+	{
+	  DisplayStatusInfo("Error! 8085 CPU Mode");
+	  SendResponse(Error, "Could not create the 8085 CPU object.");
+	  return;
+	}
+
+	cpuResult = m_currentCpu->idle();
+	if (cpuResult->code != ERROR_SUCCESS)
+	{
+	  DisplayCommandDetails("Error! " + cpuResult->description);
+	  SendResponse(Error, cpuResult->description);
+	  return;
+	}
+
+	DisplayStatusInfo("8085 CPU Mode");
+	SendResponse(Success, "CPU Set to 8085");
   }
   else if (p_parameters == "8088")
   {
